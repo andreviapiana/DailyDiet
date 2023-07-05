@@ -13,10 +13,6 @@ export const Container = styled(TouchableOpacity)`
   height: 24px;
   justify-content: center;
   align-items: center;
-
-  position: absolute;
-  top: 8px;
-  right: 8px;
 `
 
 export const Icon = styled(MaterialIcons).attrs<Props>(({ theme, type }) => ({
