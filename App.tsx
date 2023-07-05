@@ -8,9 +8,7 @@ import {
 } from '@expo-google-fonts/nunito-sans'
 
 import { Loading } from '@components/Loading'
-
-import { Home } from '@screens/Home'
-import { Statistics } from '@screens/Statistics'
+import { Routes } from '@routes/index'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -26,7 +24,7 @@ export default function App() {
           backgroundColor="transparent"
           translucent
         />
-        {fontsLoaded ? <Statistics /> : <Loading />}
+        {fontsLoaded ? <Routes /> : <Loading />}
       </>
     </ThemeProvider>
   )
