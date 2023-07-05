@@ -18,6 +18,7 @@ export const Logo = styled.Image`
 export const User = styled.Image`
   width: 40px;
   height: 40px;
-  border: 2px solid ${({ theme }) => theme.COLORS.GRAY_2};
-  border-radius: 9999;
+  border-width: 2px;
+  border-color: ${({ theme }) => theme.COLORS.GRAY_1};
+  border-radius: 9999px;
 `
