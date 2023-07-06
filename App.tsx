@@ -8,7 +8,7 @@ import {
 } from '@expo-google-fonts/nunito-sans'
 
 import { Loading } from '@components/Loading'
-import { Routes } from '@routes/index'
+import { Routes } from './src/routes'
 
 export default function App() {
   const [fontsLoaded] = useFonts({

@@ -3,6 +3,7 @@ import { Container, PercentInfoTypeStyleProps, IconWrapper } from './styles'
 
 import { ButtonIcon } from '@components/ButtonIcon'
 import { Highlight } from '@components/Highlight'
+import { useNavigation } from '@react-navigation/native'
 
 type PercentProps = TouchableOpacityProps & {
   type?: PercentInfoTypeStyleProps
@@ -10,12 +11,19 @@ type PercentProps = TouchableOpacityProps & {
 }
 
 export function PercentInfo({ percent }: PercentProps) {
+  const navigation = useNavigation()
+
+  function handleStatistics() {
+    navigation.navigate('statistics')
+  }
+
   return (
     <Container type={percent < 50 ? 'SECONDARY' : 'PRIMARY'}>
       <IconWrapper>
         <ButtonIcon
           icon="north-east"
           type={percent < 50 ? 'SECONDARY' : 'PRIMARY'}
+          onPress={handleStatistics}
         />
       </IconWrapper>
       <Highlight
