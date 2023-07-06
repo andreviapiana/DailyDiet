@@ -5,6 +5,7 @@ import { PercentInfo } from '@components/PercentInfo'
 import { Button } from '@components/Button'
 import { MealCard } from '@components/MealCard'
 import { SectionList } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const MEALS = [
   {
@@ -85,6 +86,7 @@ const MEALS = [
 ]
 
 export function Home() {
+  // Limitando o tamanho do nome de uma refeição e adicionando os 3 pontinhos...//
   function truncateString(str: string, num: number) {
     if (str.length > num) {
       return str.slice(0, num - 1) + '...'
@@ -93,12 +95,19 @@ export function Home() {
     }
   }
 
+  // Navegando p/ a página NewAndEdit //
+  const navigation = useNavigation()
+
+  function handleNewAndEdit() {
+    navigation.navigate('newandedit')
+  }
+
   return (
     <Container>
       <Header />
       <PercentInfo percent={90.86} />
       <Title>Refeições</Title>
-      <Button title="Nova refeição" icon="add" />
+      <Button title="Nova refeição" icon="add" onPress={handleNewAndEdit} />
 
       <SectionList
         style={{
