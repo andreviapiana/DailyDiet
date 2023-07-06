@@ -38,7 +38,7 @@ export function Statistics() {
       </IconWrapper>
 
       <Highlight
-        title={`${percent}%`}
+        title={`${(Math.round(percent * 100) / 100).toFixed(2)}%`}
         subtitle={'das refeições dentro da dieta'}
       />
       <StatisticsWrapper>
