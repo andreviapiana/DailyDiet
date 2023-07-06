@@ -3,9 +3,10 @@ export declare global {
   namespace ReactNavigation {
     interface RootParamList {
       home: undefined
-statistics: {
-  percent: number
-}
+      statistics: {
+        percent: number
+      }
+      newandedit: undefined
     }
   }
 }
