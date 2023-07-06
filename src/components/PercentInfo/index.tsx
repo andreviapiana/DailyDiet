@@ -14,7 +14,7 @@ export function PercentInfo({ percent }: PercentProps) {
   const navigation = useNavigation()
 
   function handleStatistics() {
-    navigation.navigate('statistics')
+    navigation.navigate('statistics', { percent })
   }
 
   return (

@@ -10,20 +10,22 @@ import {
 import { Highlight } from '@components/Highlight'
 import { ButtonIcon } from '@components/ButtonIcon'
 import { TouchableOpacityProps } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 type StatisticsProps = TouchableOpacityProps & {
   percent: number
 }
 
-export function Statistics(/* { percent }: StatisticsProps */) {
-  const percent = 90.86
-
+export function Statistics() {
   const navigation = useNavigation()
 
   function previousPage() {
     navigation.goBack()
   }
+
+  const route = useRoute()
+
+  const { percent } = route.params as StatisticsProps
 
   return (
     <Container type={percent < 50 ? 'SECONDARY' : 'PRIMARY'}>
