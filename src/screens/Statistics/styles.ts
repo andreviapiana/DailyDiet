@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export type StatisticsInfoTypeStyleProps = 'PRIMARY' | 'SECONDARY'
 
@@ -6,11 +7,11 @@ type Props = {
   type: StatisticsInfoTypeStyleProps
 }
 
-export const Container = styled.View<Props>`
+export const Container = styled(SafeAreaView)<Props>`
   flex: 1;
   background-color: ${({ theme, type }) =>
     type === 'PRIMARY' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
-  padding: 72px 0 0;
+  padding: 48px 0 0;
 `
 
 export const IconWrapper = styled.View`
