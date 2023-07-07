@@ -1,9 +1,13 @@
 import { Container, FeedbackImage, StrongText, Subtitle, Title } from './styles'
 
 import { Button } from '@components/Button'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import goodFeedbackImg from '@assets/positive.png'
 import badFeedbackImg from '@assets/negative.png'
+
+type FeedbackProps = {
+  inDiet: boolean
+}
 
 export function Feedback() {
   const navigation = useNavigation()
@@ -12,7 +16,9 @@ export function Feedback() {
     navigation.navigate('home')
   }
 
-  const inDiet = true
+  const route = useRoute()
+
+  const { inDiet } = route.params as FeedbackProps
 
   return (
     <Container>

@@ -36,11 +36,12 @@ export function NewAndEdit() {
 
   // Navegando para a página Feedback //
   function handleFeedback() {
-    navigation.navigate('feedback')
+    navigation.navigate('feedback', { inDiet })
   }
 
   // State inicial do Filter(o Sim começa selecionado) //
-  const [inDiet, setInDiet] = useState('Sim')
+  const [isActive, setIsActive] = useState('Sim')
+  const inDiet = isActive === 'Sim'
 
   // DateTime Picker //
   const [date, setDate] = useState(new Date())
@@ -126,8 +127,8 @@ export function NewAndEdit() {
                 <Filter
                   style={{ width: '49%' }}
                   title={item}
-                  isActive={item === inDiet}
-                  onPress={() => setInDiet(item)}
+                  isActive={item === isActive}
+                  onPress={() => setIsActive(item)}
                 />
               )}
             />
