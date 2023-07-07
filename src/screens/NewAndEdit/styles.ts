@@ -27,6 +27,7 @@ export const Form = styled.View`
   flex: 1;
   gap: 24px;
   width: 100%;
+  min-height: 500px;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
