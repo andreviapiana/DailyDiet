@@ -7,6 +7,7 @@ export declare global {
         percent: number
       }
       newandedit: undefined
+      feedback: undefined
     }
   }
 }
