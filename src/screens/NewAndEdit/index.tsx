@@ -18,7 +18,12 @@ import { Button } from '@components/Button'
 
 import { useNavigation } from '@react-navigation/native'
 import { SetStateAction, useState } from 'react'
-import { FlatList, Text } from 'react-native'
+import {
+  FlatList,
+  Keyboard,
+  Text,
+  TouchableWithoutFeedback,
+} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 export function NewAndEdit() {
@@ -69,66 +74,68 @@ export function NewAndEdit() {
 
       <Title>Nova Refeição</Title>
 
-      <Form>
-        <Input label="Nome" placeholder="Digite o nome" />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <Form>
+          <Input label="Nome" placeholder="Digite o nome" />
 
-        <Input
-          label="Descrição"
-          type="TEXTAREA"
-          multiline
-          numberOfLines={3}
-          placeholder="Digite uma descrição"
-        />
+          <Input
+            label="Descrição"
+            type="TEXTAREA"
+            multiline
+            numberOfLines={3}
+            placeholder="Digite uma descrição"
+          />
 
-        <InlineInputWrapper>
-          <FakeInputWrapper>
-            <FakeInputLabel>Data</FakeInputLabel>
-            <FakeInput onPress={showDatepicker}>
-              <Text>{date.toLocaleDateString()}</Text>
-            </FakeInput>
-          </FakeInputWrapper>
-          <FakeInputWrapper>
-            <FakeInputLabel>Hora</FakeInputLabel>
-            <FakeInput onPress={showTimepicker}>
-              <Text>
-                {date.toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Text>
-            </FakeInput>
-          </FakeInputWrapper>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              onChange={onChange}
-            />
-          )}
-        </InlineInputWrapper>
-
-        <FilterWrapper>
-          <FilterTitle>Está dentro da dieta?</FilterTitle>
-          <FlatList
-            data={['Sim', 'Não']}
-            numColumns={2}
-            columnWrapperStyle={{ justifyContent: 'space-between' }}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <Filter
-                style={{ width: '49%' }}
-                title={item}
-                isActive={item === inDiet}
-                onPress={() => setInDiet(item)}
+          <InlineInputWrapper>
+            <FakeInputWrapper>
+              <FakeInputLabel>Data</FakeInputLabel>
+              <FakeInput onPress={showDatepicker}>
+                <Text>{date.toLocaleDateString()}</Text>
+              </FakeInput>
+            </FakeInputWrapper>
+            <FakeInputWrapper>
+              <FakeInputLabel>Hora</FakeInputLabel>
+              <FakeInput onPress={showTimepicker}>
+                <Text>
+                  {date.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              </FakeInput>
+            </FakeInputWrapper>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                onChange={onChange}
               />
             )}
-          />
-        </FilterWrapper>
+          </InlineInputWrapper>
 
-        <Button title={'Cadastrar refeição'} onPress={handleFeedback} />
-      </Form>
+          <FilterWrapper>
+            <FilterTitle>Está dentro da dieta?</FilterTitle>
+            <FlatList
+              data={['Sim', 'Não']}
+              numColumns={2}
+              columnWrapperStyle={{ justifyContent: 'space-between' }}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <Filter
+                  style={{ width: '49%' }}
+                  title={item}
+                  isActive={item === inDiet}
+                  onPress={() => setInDiet(item)}
+                />
+              )}
+            />
+          </FilterWrapper>
+
+          <Button title={'Cadastrar refeição'} onPress={handleFeedback} />
+        </Form>
+      </TouchableWithoutFeedback>
     </Container>
   )
 }
