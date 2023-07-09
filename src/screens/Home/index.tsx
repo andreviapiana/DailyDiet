@@ -14,15 +14,17 @@ const MEALS = [
       {
         id: '1',
         name: 'X-tudo',
-        description: '',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '05.07.23',
         hour: '20:00',
         inDiet: false,
       },
       {
         id: '2',
-        name: 'Lasanha de frandgo com queijo',
-        description: '',
+        name: 'Lasanha de frango com queijo',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '05.07.23',
         hour: '16:00',
         inDiet: true,
@@ -30,7 +32,8 @@ const MEALS = [
       {
         id: '3',
         name: 'Salada Cesar com frango grelhado',
-        description: '',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '05.07.23',
         hour: '12:30',
         inDiet: true,
@@ -38,7 +41,8 @@ const MEALS = [
       {
         id: '4',
         name: 'Vitamina de banana com abacate',
-        description: '',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '05.07.23',
         hour: '09:30',
         inDiet: true,
@@ -52,7 +56,8 @@ const MEALS = [
       {
         id: '1',
         name: 'X-tudo',
-        description: '',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '04.07.23',
         hour: '20:00',
         inDiet: false,
@@ -60,7 +65,8 @@ const MEALS = [
       {
         id: '2',
         name: 'Whey protein com leite',
-        description: '',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '04.07.23',
         hour: '16:00',
         inDiet: true,
@@ -68,7 +74,8 @@ const MEALS = [
       {
         id: '3',
         name: 'Salada Caesar com frango grelhado',
-        description: '',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '07.07.23',
         hour: '12:30',
         inDiet: true,
@@ -76,7 +83,8 @@ const MEALS = [
       {
         id: '4',
         name: 'Vitamina de banana com abacate',
-        description: '',
+        description:
+          'Incrivelmente saboroso(a). Dá vontade de comer o tempo todo!',
         date: '04.07.23',
         hour: '09:30',
         inDiet: true,
@@ -86,14 +94,7 @@ const MEALS = [
 ]
 
 export function Home() {
-  // Limitando o tamanho do nome de uma refeição e adicionando os 3 pontinhos...//
-  function truncateString(str: string, num: number) {
-    if (str.length > num) {
-      return str.slice(0, num - 1) + '...'
-    } else {
-      return str
-    }
-  }
+  const percent = 90.86
 
   // Navegando p/ a página NewAndEdit //
   const navigation = useNavigation()
@@ -105,7 +106,7 @@ export function Home() {
   return (
     <Container>
       <Header />
-      <PercentInfo percent={90.86} />
+      <PercentInfo percent={percent} />
       <Title>Refeições</Title>
       <Button title="Nova refeição" icon="add" onPress={handleNewAndEdit} />
 
@@ -117,8 +118,10 @@ export function Home() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <MealCard
+            date={item.date}
             hour={item.hour}
-            name={truncateString(item.name, 30)}
+            description={item.description}
+            name={item.name}
             inDiet={item.inDiet}
           />
         )}

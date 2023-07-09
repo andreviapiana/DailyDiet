@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { Details } from '@screens/Details'
 import { Feedback } from '@screens/Feedback'
 
 import { Home } from '@screens/Home'
@@ -17,6 +18,8 @@ export function AppRoutes() {
       <Screen name="newandedit" component={NewAndEdit} />
 
       <Screen name="feedback" component={Feedback} />
+
+      <Screen name="details" component={Details} />
     </Navigator>
   )
 }

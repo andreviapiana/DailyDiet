@@ -10,6 +10,13 @@ export declare global {
       feedback: {
         inDiet: boolean
       }
+details: {
+  inDiet: boolean
+  name: string
+  date: string
+  hour: string
+  description: string
+}
     }
   }
 }
