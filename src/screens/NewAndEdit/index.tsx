@@ -89,7 +89,7 @@ export function NewAndEdit() {
       name,
       description,
       date: date.toLocaleDateString(),
-      hour: date.toLocaleTimeString(),
+      hour: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       inDiet: isActive === 'Sim',
     }
 
