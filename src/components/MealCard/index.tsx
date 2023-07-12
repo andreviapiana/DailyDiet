@@ -1,23 +1,13 @@
-import { useNavigation } from '@react-navigation/native'
 import { Container, Hour, Icon, MealInfoTypeStyleProps, Name } from './styles'
 
 type Props = {
   name: string
   hour: string
-  date: string
-  description: string
   inDiet: boolean
   type?: MealInfoTypeStyleProps
 }
 
-export function MealCard({ name, hour, inDiet, date, description }: Props) {
-  // Navegando p/ a página NewAndEdit //
-  const navigation = useNavigation()
-
-  function handleDetails() {
-    navigation.navigate('details', { inDiet, name, hour, date, description })
-  }
-
+export function MealCard({ name, hour, inDiet }: Props) {
   // Limitando o tamanho do nome de uma refeição e adicionando os 3 pontinhos...//
   function truncateString(str: string, num: number) {
     if (str.length > num) {
@@ -28,7 +18,7 @@ export function MealCard({ name, hour, inDiet, date, description }: Props) {
   }
 
   return (
-    <Container onPress={handleDetails}>
+    <Container>
       <Hour>{hour}</Hour>
 
       <Name>{truncateString(name, 30)}</Name>
