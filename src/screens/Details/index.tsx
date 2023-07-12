@@ -12,7 +12,7 @@ import {
 } from './styles'
 
 import { ButtonIcon } from '@components/ButtonIcon'
-import { Alert, TouchableOpacityProps, View } from 'react-native'
+import { Alert, View } from 'react-native'
 import {
   useFocusEffect,
   useNavigation,
@@ -23,6 +23,7 @@ import { MealDTO } from '@storage/dtos/MealDTO'
 import { useCallback, useState } from 'react'
 import { getAllMeals } from '@storage/meal/getAllMeals'
 import { Loading } from '@components/Loading'
+import { removeMealById } from '@storage/meal/removeMealById'
 
 type RouteParams = {
   id: string
@@ -64,11 +65,25 @@ export function Details() {
   )
 
   // Removendo uma refeição //
-  async function handleMealRemove() {
+  async function handleRemoveMeal() {
     Alert.alert('Remover', 'Deseja realmente remover o registro da refeição?', [
       { text: 'Não', style: 'cancel' },
-      { text: 'Sim', onPress: () => mealRemove() },
+      { text: 'Sim', onPress: () => removeMeal() },
     ])
+  }
+
+  async function removeMeal() {
+    try {
+      await removeMealById(id!)
+    } catch (error) {
+      console.log(error)
+      Alert.alert(
+        'Remover refeição',
+        'Não foi possível remover a refeição. Tente novamente!',
+      )
+    } finally {
+      navigation.navigate('home')
+    }
   }
 
   return (
@@ -114,7 +129,7 @@ export function Details() {
               type="SECONDARY"
               icon="delete"
               title={'Excluir refeição'}
-              onPress={handleMealRemove}
+              onPress={handleRemoveMeal}
             />
           </ButtonsWrapper>
         </DetailsWrapper>
