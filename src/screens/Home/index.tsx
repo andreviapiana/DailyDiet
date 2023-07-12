@@ -13,9 +13,6 @@ import { getMealsByDate } from '@storage/meal/getMealsByDate'
 import { MealsHistoryDTO } from '@storage/dtos/mealsHistoryDTO'
 
 export function Home() {
-  const percent = 90.86
-  const [meals, setMeals] = useState<MealsHistoryDTO[]>([])
-
   // Navegando p/ a página NewAndEdit //
   const navigation = useNavigation()
 
@@ -28,22 +25,50 @@ export function Home() {
     navigation.navigate('details', { id })
   }
 
+  // Calculando o Percentual //
+  const [percent, setPercent] = useState(0)
+
+  async function calculatePercentageWithinDiet() {
+    const meals = await getAllMeals()
+
+    const mealsWithinDiet = meals.reduce((acc, meal) => {
+      // eslint-disable-next-line no-unused-expressions
+      meal.inDiet ? (acc += 1) : acc
+
+      return acc
+    }, 0)
+
+    const percentInDiet = (mealsWithinDiet / meals.length) * 100
+
+    setPercent(percentInDiet)
+  }
+
   // Carregando as refeições direto do Local Storage
+  const [meals, setMeals] = useState<MealsHistoryDTO[]>([])
+
   async function fetchMeals() {
     try {
       const data = await getAllMeals()
 
       const mealsByDate = getMealsByDate(data)
 
-      setMeals(mealsByDate)
+      setMeals(mealsByDate.sort().reverse())
     } catch (error) {
       console.log(error)
     }
   }
 
+  // Fazendo o Fecth das refeições ao carregar a página //
   useFocusEffect(
     useCallback(() => {
       fetchMeals()
+    }, []),
+  )
+
+  // Chamando o cálculo do percentual ao carregar a página //
+  useFocusEffect(
+    useCallback(() => {
+      calculatePercentageWithinDiet()
     }, []),
   )
 
