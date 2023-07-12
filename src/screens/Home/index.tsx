@@ -23,6 +23,11 @@ export function Home() {
     navigation.navigate('newandedit')
   }
 
+  // Navegando p/ a página Details //
+  function handleDetails(id: string) {
+    navigation.navigate('details', { id })
+  }
+
   // Carregando as refeições direto do Local Storage
   async function fetchMeals() {
     try {
@@ -60,6 +65,7 @@ export function Home() {
             hour={item.hour}
             name={item.name}
             inDiet={item.inDiet}
+            onPress={() => handleDetails(item.id)}
           />
         )}
         showsVerticalScrollIndicator={false}

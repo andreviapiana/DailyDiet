@@ -5,9 +5,10 @@ type Props = {
   hour: string
   inDiet: boolean
   type?: MealInfoTypeStyleProps
+  onPress?: () => void
 }
 
-export function MealCard({ name, hour, inDiet }: Props) {
+export function MealCard({ name, hour, inDiet, onPress }: Props) {
   // Limitando o tamanho do nome de uma refeição e adicionando os 3 pontinhos...//
   function truncateString(str: string, num: number) {
     if (str.length > num) {
@@ -18,7 +19,7 @@ export function MealCard({ name, hour, inDiet }: Props) {
   }
 
   return (
-    <Container>
+    <Container onPress={onPress}>
       <Hour>{hour}</Hour>
 
       <Name>{truncateString(name, 30)}</Name>

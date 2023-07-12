@@ -51,6 +51,7 @@ export const DetailsWrapper = styled.View`
   padding: 33px 24px;
 
   justify-content: space-between;
+  min-width: 100%;
 `
 
 export const InDietTag = styled.View`
