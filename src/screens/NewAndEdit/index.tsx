@@ -19,12 +19,16 @@ import { Button } from '@components/Button'
 import { useNavigation } from '@react-navigation/native'
 import { SetStateAction, useState } from 'react'
 import {
+  Alert,
   FlatList,
   Keyboard,
   Text,
   TouchableWithoutFeedback,
 } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { createMeal } from '@storage/meal/createMeal'
+import { MealDTO } from '@storage/dtos/MealDTO'
+import uuid from 'react-native-uuid'
 
 export function NewAndEdit() {
   // Navegando de volta para a página anterior //
@@ -34,16 +38,11 @@ export function NewAndEdit() {
     navigation.goBack()
   }
 
-  // Navegando para a página Feedback //
-  function handleFeedback() {
-    navigation.navigate('feedback', { inDiet })
-  }
-
   // State inicial do Filter(o Sim começa selecionado) //
   const [isActive, setIsActive] = useState('Sim')
   const inDiet = isActive === 'Sim'
 
-  // DateTime Picker //
+  // DateTime Picker(ele já armazena a Data e a Hora do Form dentro do Date) //
   const [date, setDate] = useState(new Date())
   const [mode, setMode] = useState('date')
   const [show, setShow] = useState(false)
@@ -67,6 +66,43 @@ export function NewAndEdit() {
     showMode('time')
   }
 
+  // Armazenando State do Name e do Description do Formulário //
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+
+  // Criando uma Nova Refeição e Navegando para a página Feedback //
+  async function handleCreateNewMeal() {
+    if (name.trim().length === 0) {
+      return Alert.alert('Nome inválido', 'Por favor, informe um nome válido!')
+    }
+    if (description.trim().length === 0) {
+      return Alert.alert(
+        'Descrição inválida',
+        'Por favor, informe uma descrição válida!',
+      )
+    }
+
+    const id = String(uuid.v4())
+
+    const newMeal: MealDTO = {
+      id,
+      name,
+      description,
+      date: date.toLocaleDateString(),
+      hour: date.toLocaleTimeString(),
+      inDiet: isActive === 'Sim',
+    }
+
+    try {
+      await createMeal(newMeal)
+      console.log(newMeal)
+    } catch {
+      return Alert.alert('Nova refeição', 'Não foi possível criar a refeição!')
+    } finally {
+      navigation.navigate('feedback', { inDiet })
+    }
+  }
+
   return (
     <Container>
       <IconWrapper>
@@ -77,7 +113,11 @@ export function NewAndEdit() {
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Form>
-          <Input label="Nome" placeholder="Digite o nome" />
+          <Input
+            label="Nome"
+            placeholder="Digite o nome"
+            onChangeText={setName}
+          />
 
           <Input
             label="Descrição"
@@ -85,6 +125,7 @@ export function NewAndEdit() {
             multiline
             numberOfLines={3}
             placeholder="Digite uma descrição"
+            onChangeText={setDescription}
           />
 
           <InlineInputWrapper>
@@ -134,7 +175,7 @@ export function NewAndEdit() {
             />
           </FilterWrapper>
 
-          <Button title={'Cadastrar refeição'} onPress={handleFeedback} />
+          <Button title={'Cadastrar refeição'} onPress={handleCreateNewMeal} />
         </Form>
       </TouchableWithoutFeedback>
     </Container>
