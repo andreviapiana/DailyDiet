@@ -6,7 +6,7 @@ export const Container = styled(SafeAreaView)`
   align-items: center;
   width: 100%;
 
-  padding: 128px 0 0;
+  padding: 128px 24px 0;
   background-color: ${({ theme }) => theme.COLORS.GRAY_7};
 `
 
