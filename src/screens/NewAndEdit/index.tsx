@@ -17,7 +17,7 @@ import { Filter } from '@components/Filter'
 import { Button } from '@components/Button'
 
 import { useNavigation } from '@react-navigation/native'
-import { SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import {
   Alert,
   FlatList,
@@ -25,10 +25,12 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from 'react-native'
-import DateTimePicker from '@react-native-community/datetimepicker'
 import { createMeal } from '@storage/meal/createMeal'
 import { MealDTO } from '@storage/dtos/MealDTO'
 import uuid from 'react-native-uuid'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 export function NewAndEdit() {
   // Navegando de volta para a página anterior //
@@ -42,28 +44,30 @@ export function NewAndEdit() {
   const [isActive, setIsActive] = useState('Sim')
   const inDiet = isActive === 'Sim'
 
-  // DateTime Picker(ele já armazena a Data e a Hora do Form dentro do Date) //
-  const [date, setDate] = useState(new Date())
-  const [mode, setMode] = useState('date')
-  const [show, setShow] = useState(false)
+  // DateTime Picker - Armazenando Data + Hora + State dos Pickers //
+  const [date, setDate] = useState('')
+  const [time, setTime] = useState('')
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
+  const [isTimePickerVisible, setIsTimePickerVisible] = useState(false)
 
-  const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate
-    setShow(false)
-    setDate(currentDate)
+  function hideDatePicker() {
+    setIsDatePickerVisible(false)
   }
 
-  const showMode = (currentMode: SetStateAction<string>) => {
-    setShow(true)
-    setMode(currentMode)
+  function handleConfirmDate(date: Date) {
+    const formattedDate = format(date, 'dd/MM/yyyy', { locale: ptBR })
+    setDate(formattedDate)
+    hideDatePicker()
   }
 
-  const showDatepicker = () => {
-    showMode('date')
+  function hideTimePicker() {
+    setIsTimePickerVisible(false)
   }
 
-  const showTimepicker = () => {
-    showMode('time')
+  function handleConfirmTime(time: Date) {
+    const formattedTime = format(time, 'HH:mm')
+    setTime(formattedTime)
+    hideTimePicker()
   }
 
   // Armazenando State do Name e do Description do Formulário //
@@ -72,13 +76,15 @@ export function NewAndEdit() {
 
   // Criando uma Nova Refeição e Navegando para a página Feedback //
   async function handleCreateNewMeal() {
-    if (name.trim().length === 0) {
-      return Alert.alert('Nome inválido', 'Por favor, informe um nome válido!')
-    }
-    if (description.trim().length === 0) {
+    if (
+      name.trim().length === 0 ||
+      description.trim().length === 0 ||
+      !date ||
+      !time
+    ) {
       return Alert.alert(
-        'Descrição inválida',
-        'Por favor, informe uma descrição válida!',
+        'Preencha todos os campos',
+        'É necessário preencher todos os campos para continuar',
       )
     }
 
@@ -88,8 +94,8 @@ export function NewAndEdit() {
       id,
       name,
       description,
-      date: date.toLocaleDateString(),
-      hour: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      date,
+      hour: time,
       inDiet: isActive === 'Sim',
     }
 
@@ -131,30 +137,28 @@ export function NewAndEdit() {
           <InlineInputWrapper>
             <FakeInputWrapper>
               <FakeInputLabel>Data</FakeInputLabel>
-              <FakeInput onPress={showDatepicker}>
-                <Text>{date.toLocaleDateString()}</Text>
+              <FakeInput onPress={() => setIsDatePickerVisible(true)}>
+                <Text>{date.toString()}</Text>
               </FakeInput>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirmDate}
+                onCancel={hideDatePicker}
+              />
             </FakeInputWrapper>
             <FakeInputWrapper>
               <FakeInputLabel>Hora</FakeInputLabel>
-              <FakeInput onPress={showTimepicker}>
-                <Text>
-                  {date.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
+              <FakeInput onPress={() => setIsTimePickerVisible(true)}>
+                <Text>{time.toString()}</Text>
               </FakeInput>
-            </FakeInputWrapper>
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                onChange={onChange}
+              <DateTimePickerModal
+                isVisible={isTimePickerVisible}
+                mode="time"
+                onConfirm={handleConfirmTime}
+                onCancel={hideTimePicker}
               />
-            )}
+            </FakeInputWrapper>
           </InlineInputWrapper>
 
           <FilterWrapper>
