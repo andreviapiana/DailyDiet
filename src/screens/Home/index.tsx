@@ -38,7 +38,7 @@ export function Home() {
       return acc
     }, 0)
 
-    const percentInDiet = (mealsWithinDiet / meals.length) * 100
+    const percentInDiet = (mealsWithinDiet / meals.length) * 100 || 0
 
     setPercent(percentInDiet)
   }
