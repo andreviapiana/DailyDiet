@@ -119,7 +119,7 @@ export function NewAndEdit() {
     try {
       await createMeal(newMeal)
       console.log(newMeal)
-    } catch {
+    } catch (error) {
       return Alert.alert('Nova refeição', 'Não foi possível criar a refeição!')
     } finally {
       navigation.navigate('feedback', { inDiet })
@@ -157,7 +157,10 @@ export function NewAndEdit() {
       await EditMeal(mealsEdited)
       console.log(mealsEdited)
     } catch (error) {
-      return Alert.alert('Nova refeição', 'Não foi possível salvar a refeição!')
+      return Alert.alert(
+        'Editar refeição',
+        'Não foi possível salvar a refeição.',
+      )
     } finally {
       navigation.navigate('feedback', { inDiet })
     }
