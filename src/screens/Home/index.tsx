@@ -17,7 +17,7 @@ export function Home() {
   const navigation = useNavigation()
 
   function handleNewAndEdit() {
-    navigation.navigate('newandedit')
+    navigation.navigate('newandedit', {})
   }
 
   // Navegando p/ a página Details //
