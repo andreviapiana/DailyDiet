@@ -16,8 +16,12 @@ import { Input } from '@components/Input'
 import { Filter } from '@components/Filter'
 import { Button } from '@components/Button'
 
-import { useNavigation } from '@react-navigation/native'
-import { useState } from 'react'
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native'
+import { useCallback, useState } from 'react'
 import {
   Alert,
   FlatList,
@@ -31,6 +35,12 @@ import uuid from 'react-native-uuid'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { EditMeal } from '@storage/meal/editMeal'
+import { getAllMeals } from '@storage/meal/getAllMeals'
+
+type RouteParams = {
+  id?: string
+}
 
 export function NewAndEdit() {
   // Navegando de volta para a página anterior //
@@ -39,6 +49,13 @@ export function NewAndEdit() {
   function previousPage() {
     navigation.goBack()
   }
+
+  // Recebendo o ID que foi enviado pela rota //
+  const route = useRoute()
+  const { id } = route.params as RouteParams
+
+  // Armazenando as Refeições em um State p/ depois buscar se o ID existe //
+  const [meals, setMeals] = useState<MealDTO[]>([])
 
   // State inicial do Filter(o Sim começa selecionado) //
   const [isActive, setIsActive] = useState('Sim')
@@ -109,13 +126,76 @@ export function NewAndEdit() {
     }
   }
 
+  // Editando uma Refeição existente e Navegando para a página Feedback //
+  async function handleEditMeal() {
+    if (
+      name.trim().length === 0 ||
+      description.trim().length === 0 ||
+      !date ||
+      !time
+    ) {
+      return Alert.alert(
+        'Preencha todos os campos',
+        'É necessário preencher todos os campos para continuar',
+      )
+    }
+
+    const mealsEdited = meals.map((meal) =>
+      meal.id === id
+        ? {
+            ...meal,
+            name,
+            description,
+            date,
+            hour: time,
+            inDiet: isActive === 'Sim',
+          }
+        : meal,
+    )
+
+    try {
+      await EditMeal(mealsEdited)
+      console.log(mealsEdited)
+    } catch (error) {
+      return Alert.alert('Nova refeição', 'Não foi possível salvar a refeição!')
+    } finally {
+      navigation.navigate('feedback', { inDiet })
+    }
+  }
+
+  // Fazendo o Fecth das refeições ao carregar a página //
+  useFocusEffect(
+    useCallback(() => {
+      async function fetchMeal() {
+        try {
+          const meals = await getAllMeals()
+
+          const meal = meals.find((meal) => meal.id === id)
+
+          if (meal) {
+            setDate(meal.date)
+            setName(meal.name)
+            setDescription(meal.description)
+            setIsActive(meal.inDiet ? 'Sim' : 'Não')
+            setTime(meal.hour)
+            setMeals(meals)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      fetchMeal()
+    }, [id]),
+  )
+
   return (
     <Container>
       <IconWrapper>
         <ButtonIcon icon="arrow-back" onPress={previousPage} />
       </IconWrapper>
 
-      <Title>Nova Refeição</Title>
+      {id ? <Title>Editar refeição</Title> : <Title>Nova refeição</Title>}
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Form>
@@ -123,6 +203,7 @@ export function NewAndEdit() {
             label="Nome"
             placeholder="Digite o nome"
             onChangeText={setName}
+            value={name}
           />
 
           <Input
@@ -132,6 +213,7 @@ export function NewAndEdit() {
             numberOfLines={3}
             placeholder="Digite uma descrição"
             onChangeText={setDescription}
+            value={description}
           />
 
           <InlineInputWrapper>
@@ -179,7 +261,14 @@ export function NewAndEdit() {
             />
           </FilterWrapper>
 
-          <Button title={'Cadastrar refeição'} onPress={handleCreateNewMeal} />
+          {id ? (
+            <Button title={'Salvar alterações'} onPress={handleEditMeal} />
+          ) : (
+            <Button
+              title={'Cadastrar refeição'}
+              onPress={handleCreateNewMeal}
+            />
+          )}
         </Form>
       </TouchableWithoutFeedback>
     </Container>
