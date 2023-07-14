@@ -27,11 +27,12 @@ ___
 ## 🎨 Layout
 Imagens da aplicação são vistas na imagem abaixo:
 
-![Capa](https://github.com/andreviapiana/test/assets/106932234/7c10f3ba-864d-4268-9c28-132d8c8c810c)
+<img width="1920" alt="Cover" src="https://github.com/andreviapiana/DailyDiet/assets/106932234/58f77ba5-d785-48ba-b11d-64f7eef74b01">
+
 
 A execução da aplicação em meu celular é vista a seguir:
 
-![execution](https://github.com/andreviapiana/test/assets/106932234/1fe8aa65-4ea8-47c5-b1de-c74a70b421a6)
+![Screenrecorder-2023-07-14-13-12-46-150](https://github.com/andreviapiana/DailyDiet/assets/106932234/ee3ef7d3-9ef7-41ff-b7da-3f301e0bd995)
 
 ___
 
