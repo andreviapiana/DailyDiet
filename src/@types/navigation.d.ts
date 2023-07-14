@@ -6,7 +6,9 @@ export declare global {
       statistics: {
         percent: number
       }
-      newandedit: undefined
+      newandedit: {
+        id?: string
+      }
       feedback: {
         inDiet: boolean
       }

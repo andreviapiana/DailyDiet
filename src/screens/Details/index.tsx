@@ -37,6 +37,11 @@ export function Details() {
     navigation.goBack()
   }
 
+  // Navegando para a página de Edição //
+  function handleGoToEditMeal() {
+    navigation.navigate('newandedit', { id })
+  }
+
   // State p/ armazenar a refeição a ser aberta //
   const [meal, setMeal] = useState<MealDTO>()
 
@@ -124,6 +129,7 @@ export function Details() {
               type="PRIMARY"
               icon="border-color"
               title={'Editar refeição'}
+              onPress={handleGoToEditMeal}
             />
             <Button
               type="SECONDARY"
